@@ -75,16 +75,9 @@
 			<version>7.41.2</version>
 		</dependency>
 		<dependency>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.2</version>
-        <configuration>
-          <systemPropertyVariables>
-            <propertyName>firefox</propertyName>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
 </dependency>
 	</dependencies>
 	
@@ -125,11 +118,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.2</version>
-        <configuration>
-          <systemPropertyVariables>
-            <propertyName>firefox</propertyName>
-          </systemPropertyVariables>
-        </configuration>
       </plugin>
 		</plugins>
 	</build>
