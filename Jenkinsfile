@@ -1,21 +1,42 @@
-		pipeline {
-	agent any
-		stages {
-			/**Insurance-Backend Pipeline Job Build and Test stages **/
-			stage('SCM Checkout') {
-				steps {
-					git url:'https://github.com/amar5182/parking_backend.git'
-						}
-								}
-			stage('Build') {
-				steps {
-                        sh"/opt/apache-maven-3.6.2/bin/mvn clean install -Dmaven.test.skip=true"
-							}
-					}
-			stage('Release') {
-				steps {
-                        sh"export JENKINS_NODE_COOKIE=dontKillMe; nohup java -jar $WORKSPACE/target/*.jar &"
-							}
-					}
-				}
-		}
+pipeline {
+  environment {
+    registry = "deepakaiden/docker-test"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/amar5182/parking_backend.git'
+      }
+    }
+    stage('build')
+        {
+            steps{
+               sh"/opt/apache-maven-3.6.2/bin/mvn clean install -Dmaven.test.skip=true"
+            }
+        }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+  }
+}
