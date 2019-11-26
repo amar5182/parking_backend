@@ -9,7 +9,7 @@
 								}
 			stage('Build') {
 				steps {
-                        sh"mvn clean install -Dmaven.test.skip=true"
+                        sh"/opt/apache-maven-3.6.2/bin/mvn clean install -Dmaven.test.skip=true"
 							}
 					}
 			stage('Release') {
