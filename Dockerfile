@@ -1,6 +1,13 @@
-FROM amarreddy94/amartomcat
+FROM mysql
 MAINTAINER amarnath
 
-COPY $WORKSPACE/target/*.jar /usr/local/tomcat/webapps/
+RUN chown -R mysql:root /var/lib/mysql/
 
-EXPOSE 8080
+ENV MYSQL_DATABASE ingdb
+ENV MYSQL_USER inguser1
+ENV MYSQL_PASSWORD H@ckath0n
+ENV MYSQL_ROOT_PASSWORD H@ckath0n
+ENV MYSQL_PORT=3306
+
+EXPOSE 3306
+
